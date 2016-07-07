@@ -111,6 +111,8 @@ BrandFTRTBL.appendChild(BrandTR2);
 BrandFTRTBL.appendChild(BrandTR3);
 
 <!--## Add to bottom of Page ##-->
+var spacing = document.createElement('br');
+body.appendChild(spacing);
 body.appendChild(BrandFTRTBL);
 }
 </script>
