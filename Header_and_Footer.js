@@ -1,7 +1,9 @@
-# branding
+#branding
 <script type="text/javascript">
 if(document.getElementById('TTLE_GUEST_BRANDING')==null)
 {
+var body = document.body;
+
 <!-- HDR Logo -->
 var BrandTD1 = document.createElement('td');
 BrandTD1.setAttribute("width","25%");
@@ -19,7 +21,6 @@ BrandHDRIMG.setAttribute("border", "0");
 BrandTD1.appendChild(BrandHDRIMG);
 
 <!-- HDR Text -->
-
 var BrandTD2 = document.createElement('td');
 BrandTD2.setAttribute("width","75%");
 
@@ -35,7 +36,6 @@ BrandHDR.appendChild(BrandTXT);
 BrandTD2.appendChild(BrandHDR);
 
 <!-- HDR Row -->
-
 var BrandTR1 = document.createElement('tr');
 BrandTR1.setAttribute("style","background:linear-gradient(#005a9c,#005a9c 19%,#4491ca 19%,#013f73)");
 BrandTR1.setAttribute("height","120");
@@ -44,7 +44,6 @@ BrandTR1.appendChild(BrandTD2);
 BrandTR1.appendChild(BrandTD1);
 
 <!-- HDR Table -->
-
 var BrandHDRTBL = document.createElement('table');
 BrandHDRTBL.setAttribute("width","100%");
 BrandHDRTBL.setAttribute("border", "0");
@@ -53,11 +52,10 @@ BrandHDRTBL.setAttribute("cellspacing", "0");
 
 BrandHDRTBL.appendChild(BrandTR1);
 
-var body = document.body;
+<!--## Inject at top of Page ##-->
 body.insertBefore(BrandHDRTBL, body.firstChild);
 
 <!-- FTR Logo -->
-
 var BrandTD3 = document.createElement('td');
 BrandTD3.setAttribute("width","100%");
 BrandTD3.setAttribute("align","left");
@@ -74,7 +72,6 @@ BrandFTRIMG.setAttribute("border", "0");
 BrandTD3.appendChild(BrandFTRIMG);
 
 <!-- FTR Row 1 -->
-
 var BrandTR2 = document.createElement('tr');
 BrandTR2.setAttribute("bgcolor","black");
 BrandTR2.setAttribute("height","30");
@@ -97,7 +94,6 @@ BrandTD4.setAttribute("cellpadding","4");
 BrandTD4.innerHTML="<ul class='TTLE_Ftr'><li><a class='TTLE_Ftr' href='//www.adelaide.edu.au/legals/copyright.html' title='Copyright Information'>Copyright</a><span> &amp; <a class='TTLE_Ftr' href='//www.adelaide.edu.au/legals/disclaim.html' title='Website Disclaimer'>Disclaimer</a></span></li><li><a class='TTLE_Ftr' href='//www.adelaide.edu.au/legals/privacy.html' title='Privacy Policy'>Privacy Policy</a></li><li><a class='TTLE_Ftr' href='//www.adelaide.edu.au/legals/disclaim.html' title='Website Disclaimer'>Disclaimer</a></li><li><a class='TTLE_Ftr' href='//www.adelaide.edu.au/feedback/' title='Website Feedback'>Feedback</a></li></ul>"
 
 <!-- FTR Row 2 -->
-
 var BrandTR3 = document.createElement('tr');
 BrandTR3.setAttribute("style","background:linear-gradient(#004f8c,#1a6fae 59%)");
 BrandTR3.setAttribute("height","40");
@@ -105,7 +101,6 @@ BrandTR3.setAttribute("height","40");
 BrandTR3.appendChild(BrandTD4);
 
 <!-- FTR Table -->
-
 var BrandFTRTBL = document.createElement('table');
 BrandFTRTBL.setAttribute("width","100%");
 BrandFTRTBL.setAttribute("border", "0");
@@ -115,6 +110,7 @@ BrandFTRTBL.setAttribute("cellspacing", "0");
 BrandFTRTBL.appendChild(BrandTR2);
 BrandFTRTBL.appendChild(BrandTR3);
 
+<!--## Add to bottom of Page ##-->
 body.appendChild(BrandFTRTBL);
 }
 </script>
