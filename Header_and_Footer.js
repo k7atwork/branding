@@ -29,7 +29,7 @@ BrandHDR.setAttribute("align","center");
 
 var BrandTXT=document.createElement('font');
 BrandTXT.setAttribute("style","color: #FFF;font-family: Georgia,Arial,Helvetica,sans-serif; font-weight: normal;font-size:29.5px;");
-BrandTXT.innerHTML="Application for an Honorary Role"
+BrandTXT.innerHTML="Application for an Honorary Role";
 
 BrandHDR.appendChild(BrandTXT);
 
@@ -114,5 +114,55 @@ BrandFTRTBL.appendChild(BrandTR3);
 var spacing = document.createElement('br');
 body.appendChild(spacing);
 body.appendChild(BrandFTRTBL);
+
+<!-- FTR Call Us -->
+var ss = document.createElement('link');
+ss.rel = "stylesheet";
+ss.href = "%bind(:1)";
+ss.type = "text/css";
+<!--document.getElementsByTagName('head')[0].appendChild(ss);-->
+
+body.appendChild(ss);
+
+var BrandTD5 = document.createElement('td');
+BrandTD5.setAttribute("width","100%");
+BrandTD5.setAttribute("align","left");
+BrandTD5.setAttribute("valign","middle");
+BrandTD5.setAttribute("cellpadding","4");
+
+var h3 = document.createElement('h3');
+h3.setAttribute("style","color:#b38808;font-family:Georgia,Times,serif;font-weight:400;font-size:20px;");
+h3.innerHTML="Contact HR Service Centre";
+
+var p=document.createElement('p');
+p.setAttribute("style","color:#666;font-family: Arial,Helvetica,sans-serif;font-size:13px");
+p.setAttribute("margin-bottom","10px");
+p.innerHTML="For all enquiries please contact the Human Resources Service Centre.";
+
+var div=document.createElement('div');
+div.setAttribute("class","call-us");
+div.setAttribute("style","padding-left:0;vertical-align: middle; top:-10px;");
+
+div.innerHTML="<a href='/hr/about/service-centre/enquiry/' class='button button-blue'>Online Enquiries</a><a href='/hr/about/service-centre/feedback/' class='button button-blue'>Feedback</a><span class='icon' style='display: inline-block;position:relative;top:-5px;left:0px;margin-right:10px;margin-left:10px;vertical-align: bottom;'>&nbsp;</span>Call us<strong> +61 8 831 31111</strong>";
+
+BrandTD5.appendChild(h3);
+BrandTD5.appendChild(p);
+BrandTD5.appendChild(div);
+
+<!-- FTR Row 3 -->
+var BrandTR4 = document.createElement('tr');
+BrandTR4.setAttribute("style","background-color: #f4edda;");
+
+BrandTR4.appendChild(BrandTD5);
+
+<!-- FTR Table -->
+var BrandFTRTBL2 = document.createElement('table');
+BrandFTRTBL2.setAttribute("width","100%");
+BrandFTRTBL2.setAttribute("style", "border:1px;border-style:solid; border-color: #e1cfa0;");
+BrandFTRTBL2.setAttribute("cellpadding", "10");
+BrandFTRTBL2.setAttribute("cellspacing", "0");
 }
+BrandFTRTBL2.appendChild(BrandTR4);
+
+body.appendChild(BrandFTRTBL2);
 </script>
