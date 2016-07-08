@@ -1,0 +1,2 @@
+Local string &ss_URL = %Response.GetStyleSheetURL("FOOTER_BRAND_SS");
+FORM_WRK.HTMLAREA.Value = GetHTMLText(HTML.BRAND_SCRIPT, &ss_URL);
