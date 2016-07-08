@@ -28,7 +28,7 @@ var BrandHDR = document.createElement('p');
 BrandHDR.setAttribute("align","center");
 
 var BrandTXT=document.createElement('font');
-BrandTXT.setAttribute("style","color: #FFF;font-family: Georgia,Arial,Helvetica,sans-serif; font-weight: normal;font-size:29.5px;");
+BrandTXT.setAttribute("style","color: #FFF;font-family: Georgia,Arial,Helvetica,sans-serif; font-weight: normal;font-size:29.5px;text-shadow:1px 1px 1px #255e8b;");
 BrandTXT.innerHTML="Application for an Honorary Role";
 
 BrandHDR.appendChild(BrandTXT);
