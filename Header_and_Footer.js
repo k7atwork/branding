@@ -38,7 +38,7 @@ BrandTD2.appendChild(BrandHDR);
 
 <!-- HDR Row -->
 var BrandTR1 = document.createElement('tr');
-BrandTR1.setAttribute("style","background:linear-gradient(#005a9c,#005a9c 19%,#4491ca 19%,#013f73)");
+BrandTR1.setAttribute("style","background:-webkit-linear-gradient(#005a9c,#005a9c 19%,#4491ca 19%,#013f73);background:linear-gradient(#005a9c,#005a9c 19%,#4491ca 19%,#013f73)");
 BrandTR1.setAttribute("height","120");
 
 BrandTR1.appendChild(BrandTD2);
