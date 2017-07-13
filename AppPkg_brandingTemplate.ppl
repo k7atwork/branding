@@ -1,3 +1,9 @@
+/*
+-------------------------------------------
+Application Package: EMAIL_BRANDING_UOA
+Application Class: SSO_EmailBranding
+-------------------------------------------
+*/
 
 import PT_WF_NOTIFICATION:*;
 
@@ -122,9 +128,16 @@ method GetBrandedEmailText
 end-method;
 
 
+/*
+-------------------------------------------
+Application Package: EOAW_CORE
+Application Class: NotificationManager
+-------------------------------------------
+*/
 
 import EMAIL_BRANDING_UOA:*;
 
+REM --> Slipstream into Notify method
 
 Local EMAIL_BRANDING_UOA:SSO_EmailBranding &UOAEmailBranding = create EMAIL_BRANDING_UOA:SSO_EmailBranding(&templateID_);
          
@@ -132,9 +145,17 @@ If &UOAEmailBranding.UseBranding = "Y" Then
      &Notification.Message = &UOAEmailBranding.GetBrandedEmailText(&Notification.Message);
      &Notification.ContentType = "Content-type: text/html; charset=UTF-8";
 End-If;
+
+REM <--
+
          
-         
-         
+/*
+-------------------------------------------
+Record: DERIVED_HR_UOA
+Field: PREVIEW_PB
+Event: FieldChange
+-------------------------------------------
+*/         
          
 import EMAIL_BRANDING_UOA:*;
 
