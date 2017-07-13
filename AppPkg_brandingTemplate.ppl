@@ -1,0 +1,161 @@
+
+import PT_WF_NOTIFICATION:*;
+
+class SSO_EmailBranding
+   property string UseBranding;
+   property string UseBrandTemplate;
+   property string BrandingTemplateID;
+   property string BrandingTitle;
+   property string BrandingWrapper;
+   
+   property PT_WF_NOTIFICATION:NotificationTemplate EmailTemplate;
+   
+   method SSO_EmailBranding(&WL_Template_ID As string);
+   method GetBrandedEmailText(&emailText As string) Returns string;
+   
+private
+   
+   method PrepareParameters(&emailText As string) Returns array of string;
+   
+end-class;
+
+method SSO_EmailBranding
+   /+ &WL_Template_ID as String +/
+   
+   
+   Local Record &UOABranding = CreateRecord(Record.WL_TEMPLATE_UOA);
+   
+   &UOABranding.WL_TEMPLATE_ID.Value = &WL_Template_ID;
+   
+   If &UOABranding.SelectByKey() Then
+      
+      %This.UseBranding = &UOABranding.EMAIL_RICHTEXT.Value;
+      %This.UseBrandTemplate = &UOABranding.TEMPLATE_SW.Value;
+      %This.BrandingTemplateID = &UOABranding.HRS_TEMPLATE_ID.Value;
+      %This.BrandingTitle = &UOABranding.WL_SUBJECT.Value;
+      %This.BrandingWrapper = &UOABranding.WL_MSG_TXT.Value;
+      
+   End-If;
+   
+end-method;
+
+method PrepareParameters
+   /+ &emailText as String +/
+   /+ Returns Array of String +/
+   
+   Local array of string &parms = CreateArrayRept("", 0);
+   
+   If %This.UseBrandTemplate = "Y" Then
+      
+      Local Rowset &RsTmplParms = CreateRowset(Record.WL_TEMPL_GEN_TK);
+      &RsTmplParms.Fill("WHERE WL_TEMPLATE_ID=:1", %This.BrandingTemplateID);
+      &RsTmplParms.Sort(WL_TEMPL_GEN_TK.SEQNO, "A");
+      
+      Local number &i;
+      For &i = 1 To &RsTmplParms.RowCount
+         
+         Local Record &RecTmplParms = &RsTmplParms(&i).WL_TEMPL_GEN_TK;
+         Evaluate &RecTmplParms.DESCR.Value
+         When = "Title"
+            If %This.BrandingTitle <> "" Then
+               &parms.Push(%This.BrandingTitle);
+            Else
+               &parms.Push("<img src='https://sso.adelaide.edu.au/hcm92prd_sso/images/ss_28.gif'>");
+            End-If;
+            Break;
+         When = "CurrentDate"
+            &parms.Push(DateTimeToLocalizedString(%Date, "d MMM yyyy"));
+            Break;
+         When = "EmailDisclaimer"
+            &parms.Push(MsgGetExplainText(24646, 304, "The University of Adelaide, AUSTRALIA 5005"));
+            Break;
+         When = "EmailContent"
+            &parms.Push(&emailText);
+            Break;
+         When-Other
+            Error MsgGetText(0, 0, "Undefined Parameter:%1 in SEQNO %2  - Please review", &RecTmplParms.DESCR.Value, &RecTmplParms.SEQNO.Value);
+         End-Evaluate;
+         
+      End-For;
+      
+   Else
+      &parms.Push(&emailText);
+   End-If;
+   
+   Return &parms;
+   
+end-method;
+
+method GetBrandedEmailText
+   /+ &emailText as String +/
+   /+ Returns String +/
+   
+   If %This.UseBranding = "Y" Then
+      
+      If %This.UseBrandTemplate = "Y" Then
+         /*--[ Fetch EmailBranding Template ]--*/
+         %This.EmailTemplate = create PT_WF_NOTIFICATION:NotificationTemplate("", "", %This.BrandingTemplateID, "G");
+         
+         /*--[ Merge Parameter Values into Template ]--*/
+         Local string &xmlVars = %This.EmailTemplate.SetupGenericVars(%This.PrepareParameters(&emailText));
+         Local boolean &ret = %This.EmailTemplate.GetAndExpandTemplate(%Language, &xmlVars);
+         
+         Return %This.EmailTemplate.Text;
+         
+      Else
+         
+         Local array of string &parms = %This.PrepareParameters(&emailText);
+         
+         Local number &i;
+         For &i = 1 To &parms.Len
+            %This.BrandingWrapper = Substitute(%This.BrandingWrapper, "%" | &i, &parms [&i]);
+         End-For;
+         
+         Return %This.BrandingWrapper;
+         
+      End-If;
+      
+   Else
+      Return &emailText;
+   End-If;
+   
+end-method;
+
+
+
+import EMAIL_BRANDING_UOA:*;
+
+
+Local EMAIL_BRANDING_UOA:SSO_EmailBranding &UOAEmailBranding = create EMAIL_BRANDING_UOA:SSO_EmailBranding(&templateID_);
+         
+If &UOAEmailBranding.UseBranding = "Y" Then
+     &Notification.Message = &UOAEmailBranding.GetBrandedEmailText(&Notification.Message);
+     &Notification.ContentType = "Content-type: text/html; charset=UTF-8";
+End-If;
+         
+         
+         
+         
+import EMAIL_BRANDING_UOA:*;
+
+Evaluate %Component
+When = Component.WL_TEMPLATE_GEN
+   If WL_TEMPLATE_UOA.EMAIL_RICHTEXT.Value = "Y" Then
+      DERIVED_HR_UOA.HTMLAREA.Value = (create EMAIL_BRANDING_UOA:SSO_EmailBranding(WL_TEMPLATE_GEN.WL_TEMPLATE_ID.Value)).GetBrandedEmailText(WL_TEMPLATE_GEN.WL_MSG_TXT.Value);
+      DoModalS(Page.WL_TEMPLATE_UOA_SP, "HTML Preview of " | WL_TEMPLATE_GEN.WL_TEMPLATE_ID.Value, 600, 600, 0);
+   Else
+      MessageBox(0, "", 0, 0, "Preview is available only for HTML email templates !");
+   End-If;
+   Break;
+When = Component.G_NTFY_TMPL_TBL
+   If G_NTFY_TMPL_TBL.HTML_TEXT_GEN.Value = "Y" Then
+      DoModalS(Page.G_NTFY_TMPL_TBL_SP, "HTML Preview of " | G_NTFY_TMPL_TBL.G_EMAILID.Value, 400, 400, 0);
+   Else
+      MessageBox(0, "", 0, 0, "Preview is available only for HTML email templates !");
+   End-If;
+   Break;
+When-Other
+End-Evaluate;
+
+
+
